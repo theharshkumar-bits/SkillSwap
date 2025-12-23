@@ -1,33 +1,47 @@
-.card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-    border-radius: 10px;
+/* Styles for SkillSwap Project
+    Focus: Clean UI with hover effects
+*/
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; /* Light grey background */
 }
 
+/* Card Styling - Making them pop a bit */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 12px;
+    background-color: white;
+}
+
+/* Lift effect on hover */
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
 
 .card-title {
-    color: #0d6efd;
-    font-weight: bold;
+    color: #0d6efd; /* Bootstrap primary blue */
+    font-weight: 700;
 }
 
-.progress {
-    height: 10px;
-    border-radius: 5px;
-}
-
-/* Expandable details section */
+/* Hidden details section (toggled by JS) */
 .details-section {
-    display: none; /* Hidden by default */
+    display: none; 
     margin-top: 15px;
     padding-top: 10px;
-    border-top: 1px solid #eee;
+    border-top: 1px dashed #ccc;
 }
 
+/* Button tweaks */
 .btn-toggle {
     width: 100%;
     margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+/* Custom range slider color */
+input[type=range] {
+    cursor: pointer;
 }
