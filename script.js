@@ -1,42 +1,126 @@
 console.log("SkillSwap App Loaded...");
 
-// 1. Initial Data (Simulating a DB)
+// --- PART 1: ROADMAP GENERATOR DATA ---
+// I created a simple 'dictionary' for common tech skills.
+const learningPaths = {
+    "java": {
+        steps: ["Learn JDK setup & Variables", "Control Flow (If/Else, Loops)", "OOPs (Class, Object, Inheritance)", "Collections Framework", "Exception Handling", "JDBC & Database Connectivity", "Spring Boot Basics"],
+        resources: [
+            { name: "Oracle Documentation", link: "https://docs.oracle.com/en/java/" },
+            { name: "CodeCademy (Java)", link: "https://www.codecademy.com/learn/learn-java" },
+            { name: "LeetCode (Practice)", link: "https://leetcode.com/" }
+        ]
+    },
+    "react": {
+        steps: ["HTML/CSS Refresher", "ES6+ JavaScript (Arrow functions, Destructuring)", "JSX & Components", "Props & State (useState)", "useEffect & Lifecycle", "React Router", "Redux Toolkit / Context API"],
+        resources: [
+            { name: "React Official Docs", link: "https://react.dev/" },
+            { name: "FreeCodeCamp", link: "https://www.freecodecamp.org/" },
+            { name: "CodeSandbox (Practice)", link: "https://codesandbox.io/" }
+        ]
+    },
+    "python": {
+        steps: ["Syntax & Variables", "Lists, Tuples, Dictionaries", "Functions & Modules", "File Handling", "OOP in Python", "Libraries (Pandas, NumPy)", "Web Frameworks (Flask/Django)"],
+        resources: [
+            { name: "Python.org Docs", link: "https://docs.python.org/3/" },
+            { name: "Automate the Boring Stuff", link: "https://automatetheboringstuff.com/" },
+            { name: "HackerRank (Practice)", link: "https://www.hackerrank.com/domains/python" }
+        ]
+    },
+    "sql": {
+        steps: ["Select, From, Where", "Joins (Inner, Left, Right)", "Group By & Aggregates", "Subqueries", "Table Creation & Constraints", "Normalization", "Stored Procedures"],
+        resources: [
+            { name: "W3Schools SQL", link: "https://www.w3schools.com/sql/" },
+            { name: "SQLZoo (Practice)", link: "https://sqlzoo.net/" },
+            { name: "Mode Analytics Tutorial", link: "https://mode.com/sql-tutorial/" }
+        ]
+    },
+    // Default fallback if skill isn't found
+    "default": {
+        steps: ["Understand the Basics (Syntax)", "Setup Development Environment", "Build a 'Hello World' App", "Learn Core Concepts", "Build a Mini Project", "Read Official Documentation"],
+        resources: [
+            { name: "YouTube Tutorials", link: "https://www.youtube.com/" },
+            { name: "Stack Overflow", link: "https://stackoverflow.com/" },
+            { name: "Official Documentation", link: "#" }
+        ]
+    }
+};
+
+// --- ROADMAP FUNCTIONALITY ---
+function generateRoadmap() {
+    const input = document.getElementById('targetSkillInput').value.toLowerCase().trim();
+    const resultDiv = document.getElementById('roadmapResult');
+    const skillTitle = document.getElementById('skillName');
+    const stepsList = document.getElementById('roadmapSteps');
+    const resourceList = document.getElementById('roadmapResources');
+
+    if (!input) {
+        alert("Please enter a skill name first!");
+        return;
+    }
+
+    console.log("Generating roadmap for:", input);
+
+    // Get data or fallback to default
+    // We check if the input exists in our object, otherwise use 'default'
+    const data = learningPaths[input] || learningPaths['default'];
+    
+    // Update UI
+    resultDiv.style.display = "block";
+    skillTitle.innerText = input.charAt(0).toUpperCase() + input.slice(1); // Capitalize
+    
+    // Clear previous lists
+    stepsList.innerHTML = "";
+    resourceList.innerHTML = "";
+
+    // Inject Steps
+    data.steps.forEach(step => {
+        let li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerText = step;
+        stepsList.appendChild(li);
+    });
+
+    // Inject Resources
+    data.resources.forEach(res => {
+        let li = document.createElement("li");
+        li.innerHTML = `<i class="bi bi-link-45deg"></i> <a href="${res.link}" target="_blank">${res.name}</a>`;
+        resourceList.appendChild(li);
+    });
+}
+
+
+// --- PART 2: TRACKER DATA (Existing Code) ---
+
 const initialData = [
-    { id: 1, title: "Core Java", category: "Backend", desc: "OOP, Collections, and Exception Handling.", progress: 0 },
-    { id: 2, title: "HTML5 & CSS3", category: "Frontend", desc: "Building responsive web layouts.", progress: 0 },
-    { id: 3, title: "JavaScript ES6", category: "Frontend", desc: "DOM manipulation and modern syntax.", progress: 0 },
-    { id: 4, title: "SQL / MySQL", category: "Database", desc: "Writing complex queries and joins.", progress: 0 },
-    { id: 5, title: "Spring Boot", category: "Backend", desc: "Building REST APIs and microservices.", progress: 0 },
-    { id: 6, title: "Bootstrap", category: "Frontend", desc: "Rapid responsive UI development.", progress: 0 }
+    { id: 1, title: "Core Java", category: "Backend", desc: "OOP, Collections, and Exception Handling.", progress: 60 },
+    { id: 2, title: "HTML5 & CSS3", category: "Frontend", desc: "Building responsive web layouts.", progress: 90 },
+    { id: 3, title: "JavaScript ES6", category: "Frontend", desc: "DOM manipulation and modern syntax.", progress: 40 },
+    { id: 4, title: "SQL / MySQL", category: "Database", desc: "Writing complex queries and joins.", progress: 75 },
+    { id: 5, title: "Spring Boot", category: "Backend", desc: "Building REST APIs and microservices.", progress: 10 },
+    { id: 6, title: "Bootstrap", category: "Frontend", desc: "Rapid responsive UI development.", progress: 85 }
 ];
 
-// 2. Load data from LocalStorage OR use initialData if first time
 let skillsList = JSON.parse(localStorage.getItem('mySkillSwapData')) || initialData;
 
-// DOM Elements
 const container = document.getElementById('skillsContainer');
 const searchBox = document.getElementById('searchInput');
 const filterBox = document.getElementById('categoryFilter');
 
-// 3. Main Function to Display Skills
 function renderUI(searchText = '', category = 'All') {
-    // Clear existing content
     container.innerHTML = ''; 
 
-    // Filter logic
     const filteredSkills = skillsList.filter(skill => {
         const matchesText = skill.title.toLowerCase().includes(searchText.toLowerCase());
         const matchesCat = category === 'All' || skill.category === category;
         return matchesText && matchesCat;
     });
 
-    // Check if no results found
     if (filteredSkills.length === 0) {
         container.innerHTML = '<div class="col-12 text-center text-muted">No skills found.</div>';
         return;
     }
 
-    // Loop through results and create HTML
     filteredSkills.forEach(skill => {
         const cardHTML = `
             <div class="col-md-4 col-sm-6">
@@ -67,18 +151,15 @@ function renderUI(searchText = '', category = 'All') {
     });
 }
 
-// 4. Update Progress Function
 window.updateProgress = (id, value) => {
-    // Find item and update value
     const skill = skillsList.find(s => s.id === id);
     if (skill) {
         skill.progress = value;
         document.getElementById(`val-${id}`).innerText = value + "%";
-        saveToBrowser(); // Save changes
+        saveToBrowser();
     }
 };
 
-// 5. Quick "Mark as Done" button
 window.finishSkill = (id) => {
     console.log("Marking skill " + id + " as complete.");
     const rangeInput = document.querySelector(`input[oninput="updateProgress(${id}, this.value)"]`);
@@ -86,7 +167,6 @@ window.finishSkill = (id) => {
     updateProgress(id, 100);
 };
 
-// 6. Toggle Description Visibility
 window.toggleDetails = (id) => {
     const section = document.getElementById(`details-${id}`);
     const btn = document.querySelector(`button[onclick="toggleDetails(${id})"]`);
@@ -100,20 +180,15 @@ window.toggleDetails = (id) => {
     }
 };
 
-// 7. Save to LocalStorage
 function saveToBrowser() {
     localStorage.setItem('mySkillSwapData', JSON.stringify(skillsList));
-    console.log("Data saved to LocalStorage.");
 }
 
-// Event Listeners for Search
 searchBox.addEventListener('input', (e) => {
-    console.log("Searching: " + e.target.value);
     renderUI(e.target.value, filterBox.value);
 });
 
 filterBox.addEventListener('change', (e) => {
-    console.log("Filter changed to: " + e.target.value);
     renderUI(searchBox.value, e.target.value);
 });
 

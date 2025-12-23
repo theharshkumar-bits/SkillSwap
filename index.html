@@ -6,6 +6,7 @@
     <title>SkillSwap | My Learning Portal</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-light">
@@ -15,16 +16,52 @@
             <a class="navbar-brand fw-bold" href="#">
                 <i class="bi bi-code-slash"></i> SkillSwap
             </a>
-            <span class="navbar-text text-white small">
-                Track your learning journey
+            <span class="navbar-text text-white small d-none d-md-block">
+                Track your journey & find your path
             </span>
         </div>
     </nav>
 
     <div class="container">
+        
+        <div class="card border-0 shadow-sm mb-5" id="roadmapSection">
+            <div class="card-body p-4 bg-white rounded">
+                <h4 class="text-primary fw-bold mb-3"><i class="bi bi-compass"></i> What do you want to learn?</h4>
+                <p class="text-muted">Enter a tech skill to get a tailored roadmap and practice resources.</p>
+                
+                <div class="input-group mb-3">
+                    <input type="text" id="targetSkillInput" class="form-control" placeholder="e.g. React, Java, SQL, Python...">
+                    <button class="btn btn-primary" onclick="generateRoadmap()">Get Roadmap</button>
+                </div>
+
+                <div id="roadmapResult" class="mt-4" style="display: none;">
+                    <h5 class="fw-bold">Roadmap for: <span id="skillName" class="text-success"></span></h5>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded h-100">
+                                <h6 class="fw-bold text-dark border-bottom pb-2">Step-by-Step Path</h6>
+                                <ul id="roadmapSteps" class="list-group list-group-flush bg-transparent">
+                                    </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3 mt-md-0">
+                            <div class="p-3 bg-light rounded h-100">
+                                <h6 class="fw-bold text-dark border-bottom pb-2">Where to Practice</h6>
+                                <ul id="roadmapResources" class="list-unstyled mt-2">
+                                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="mb-3 text-dark fw-bold"><i class="bi bi-list-check"></i> Your Current Progress</h4>
+        
         <div class="row mb-4 g-3">
             <div class="col-md-8">
-                <input type="text" id="searchInput" class="form-control" placeholder="Type to search skills (e.g., Java)...">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search your active skills...">
             </div>
             <div class="col-md-4">
                 <select id="categoryFilter" class="form-select">

@@ -1,13 +1,11 @@
-/* Styles for SkillSwap Project
-    Focus: Clean UI with hover effects
-*/
+/* Styles for SkillSwap Project */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa; /* Light grey background */
+    background-color: #f0f2f5; /* Slightly softer grey */
 }
 
-/* Card Styling - Making them pop a bit */
+/* --- Tracker Card Styling --- */
 .card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: none;
@@ -15,18 +13,17 @@ body {
     background-color: white;
 }
 
-/* Lift effect on hover */
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
 
 .card-title {
-    color: #0d6efd; /* Bootstrap primary blue */
+    color: #0d6efd;
     font-weight: 700;
 }
 
-/* Hidden details section (toggled by JS) */
+/* Hidden details section */
 .details-section {
     display: none; 
     margin-top: 15px;
@@ -34,14 +31,43 @@ body {
     border-top: 1px dashed #ccc;
 }
 
-/* Button tweaks */
 .btn-toggle {
     width: 100%;
     margin-top: 10px;
     font-size: 0.9rem;
 }
 
-/* Custom range slider color */
 input[type=range] {
     cursor: pointer;
+}
+
+/* --- New Roadmap Section Styling --- */
+#roadmapSection {
+    border-left: 5px solid #0d6efd; /* Blue accent line */
+}
+
+#roadmapSteps li {
+    background: transparent;
+    padding-left: 0;
+    font-size: 0.95rem;
+}
+
+#roadmapSteps li::before {
+    content: "➝ ";
+    color: #0d6efd;
+    font-weight: bold;
+}
+
+#roadmapResources li {
+    margin-bottom: 8px;
+}
+
+#roadmapResources a {
+    text-decoration: none;
+    color: #198754; /* Green color for links */
+    font-weight: 500;
+}
+
+#roadmapResources a:hover {
+    text-decoration: underline;
 }
